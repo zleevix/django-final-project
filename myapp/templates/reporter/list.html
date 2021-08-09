@@ -1,0 +1,114 @@
+{% extends 'base/base.html' %}
+{% block title %}
+  {{ block.super }}| List all reporter
+{% endblock title %}
+
+{% block content %}
+  <div class="col-md-12">
+    <div class="text-center justify-content-center" id="loader" style="display:none;">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>  
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Tên</th>
+            <th scope="col">Họ</th>
+            <th scope="col">Email</th>
+            <th scope="col">
+              <!-- {{ perms.myapp.add_reporter }} -->
+              {% if perms.myapp.add_reporter %}
+                <a href="{% url 'add_reporter'%}"><i class="bi bi-plus-square"></i></a>
+              {% else %}
+              <a style="cursor: not-allowed;" href="#"><i class="bi bi-plus-square"></i></a>
+              {% endif %}
+            </th>
+          </tr>
+        </thead>
+        <tbody id="table_data">
+            {% for reporter in page_obj %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ reporter.first_name }}</td>
+                    <td>{{ reporter.last_name }}</td>
+                    <td>{{ reporter.email }}</td>
+                    <td>
+                        {% if perms.myapp.view_reporter %}
+                          <a href="{% url 'view_detail_reporter' reporter_id=reporter.id %}">
+                            <i class="bi bi-eye"></i>
+                          </a> 
+                        {% else %}
+                          <a style="cursor: not-allowed;" href="#"><i class="bi bi-plus-square"></i></a>
+                        {% endif %}
+                        
+                        | 
+                        {% if perms.myapp.change_reporter %}
+                        <a href="{% url 'update_reporter' reporter_id=reporter.id %}"><i class="bi bi-pencil"></i> </a>
+                        {% else %}
+                          <a style="cursor: not-allowed;" href="#"><i class="bi bi-pencil"></i></a>
+                        {% endif %}
+                        
+                        | 
+                        {% if perms.myapp.delete_reporter %}
+                          <a href="{% url 'delete_reporter' reporter_id=reporter.id %}"><i class="bi bi-trash"></i>
+                        {% else %}
+                          <a style="cursor: not-allowed;" href="#"><i class="bi bi-trash"></i></a>
+                        {% endif %}
+                        
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+          </tr>
+        </tbody>
+    </table>
+    
+</div>
+<script>
+  $(document).ready(function(){
+    $("#search_input").change(function(event) {
+      $("#loader").show();
+      $("body").css({"opacity": "0.5"});
+      $("#table_data").hide();
+        $.ajax({
+            type: 'GET',
+            url: "{% url 'search_reporter' %}",
+            data: {
+                search: $(this).val()
+            },
+            success: function (data) {
+              $("#table_data").html('');
+              var tr_data = '';
+              for (var i = 0; i < data.message.length; i++) {
+                tr_data += `
+                <tr>
+                  <th scope="row">${i + 1}</th>
+                  <td>${data.message[i].first_name}</td>
+                  <td>${data.message[i].last_name}</td>
+                  <td>${data.message[i].email}</td>
+                  <td>
+                  </td>
+                </tr>`
+              }
+              $("#table_data").append(tr_data);
+              $("#table_data").show();
+              $("#loader").hide();
+              $("body").css({"opacity": "1"});
+              $("#toast").ota
+            },
+            error: function ($xhr, textStatus, erroThrown) {
+                alert($xhr.responseJSON.message);
+                $(this).css({"border": "1px solid red;"});
+                $("#loader").hide();
+                $("#table_data").show();
+                $("body").css({"opacity": "1"});
+            }
+        })
+    });
+  });
+</script>
+
+{% endblock content %}
+    

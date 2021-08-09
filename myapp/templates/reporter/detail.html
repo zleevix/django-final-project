@@ -1,0 +1,17 @@
+{% extends 'base/base.html' %}
+{% block title %}
+    View detail reporter
+{% endblock title %}
+
+{% block content %}
+    <h1>View detail report id {{ reporter.id }}</h1>
+    <p>Name : {{ reporter.first_name }} {{ reporter.last_name}}</p>
+    <p>Email: {{ reporter.email }}</p>
+    
+    <h4>Danh sách các articles: </h4>
+    <ul>
+        {% for article in reporter.article_set.all %}
+            <li>{{ article.headline }}</li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

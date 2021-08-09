@@ -1,0 +1,75 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+  Index
+{% endblock title %}
+
+{% block content %}
+{% load static %}
+<div class="col-md-12">
+  <h1>Welcome to Mini Project 3</h1>
+  <img class="img-fluid" src="{% static 'images/python_django.png' %}" alt="Ảnh Python Django">
+  <!-- <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur modi doloribus porro eos asperiores dolor quibusdam eius laudantium possimus aliquid, dolores, beatae aliquam? Dolor neque quis ad dicta id sunt?</p>
+  <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Rem, quibusdam optio quisquam adipisci asperiores, non nihil temporibus fuga, corporis reprehenderit maiores eaque repellat odio reiciendis quos labore ea tenetur dolor.</p>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi quae non ut enim expedita. Quidem, sequi explicabo? Quod libero molestias corrupti ullam suscipit reiciendis voluptates dolore, corporis architecto harum perspiciatis.</p>
+  <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident, voluptatibus porro. Enim rem nemo maiores quia recusandae debitis sequi quae placeat! Atque aliquam accusantium labore vitae incidunt, quam dolorum quia.</p> -->
+</div>
+<style>
+  table, td, th {
+    border: 1px solid black;
+  }
+  .row-odd {
+    background-color: lightblue;
+  }
+  .row-even {
+    background-color: grey;
+  }
+</style>
+<table>
+  <thead>
+    <tr>
+      <th>Index</th>
+      <th>Họ</th>
+      <th>Tên</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+  <tbody id="tbody">
+
+  </tbody>
+</table>
+<script>
+  $(document).ready(function() {
+      /* fetch("http://localhost:8000/api/reporters")
+      .then(response => {
+          console.log(response.json());
+      })
+      .catch(error => {
+          console.log(error);
+      })*/
+    var dataHtml = '';
+    async function getAllData() {
+      var response = await fetch("http://localhost:8000/api/reporters");
+      console.log(response.status);
+      console.log(response.statusText);
+      if (response.status === 200) {
+        var data = await response.json();
+        data.forEach((item, index) => {
+          var class_ = "row-even";
+          if (index % 2 === 0) {
+              class_ = "row-odd";
+          }
+          dataHtml += `<tr class="${class_}">
+            <td>${index + 1}</td>
+            <td>${item.first_name}</td>
+            <td>${item.last_name}</td>
+            <td>${item.email}</td>
+          </tr>`;
+        });
+        $("#tbody").append(dataHtml);
+      }
+    }
+    getAllData();
+  });
+</script>
+{% endblock content %}

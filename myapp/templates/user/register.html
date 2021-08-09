@@ -1,0 +1,91 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+    Đăng Ký Thông Tin
+{% endblock title %}
+
+{% block content %}
+{% load static %}
+<div class="col-md-8 offset-md-2">
+    <form method="POST" enctype="multipart/form-data" id="form-register" data-url="{% url 'validate_username' %}">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                <label for="">{{ field.label }}</label>
+                {{ field }}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                <small style="color: red !important;" class="form-text text-muted"> {{ error }}</small>
+                {% endfor %}
+            {% endif %}
+            </div>    
+        {% endfor %}
+        <input type="file" name="avarta" id="avarta">
+        <input type="submit" class="btn btn-success btn-lg btn-block" value="Đăng Ký">
+    </form>
+    <p>Bạn đã có tài khoản<a href="{% url 'login_user' %}">Click here to Login</a></p>
+</div>
+<script src="{% static 'js/myscript.js' %}"></script>
+<!-- <script>
+    $(document).ready(function(){
+        // Validate username
+        $("#username").change(function() {
+            $.ajax({
+                type: 'POST',
+                url: "",
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}", // Bắt buộc phải có CSRF TOKEN
+                    username: $(this).val()
+                },
+                success: function (data) {
+                    $("#username").removeClass("is-invalid");
+                    $("#username").addClass("is-valid");
+                    $("#username").parent().append(`<div class="valid-feedback">${data.message}</div>`);
+                },
+                error: function ($xhr, textStatus, erroThrown) {
+                    $("#username").removeClass("is-valid");
+                    $("#username").addClass("is-invalid");
+                    $("#username").parent().append(`<div class="invalid-feedback">${$xhr.responseJSON.message}</div>`);
+                }
+            })
+        });
+        
+        // Password và confirm_password phải giống nhau (client validation)
+        $("#password").change(function () {
+            var password = $(this).val();
+            if (password.length < 6) {
+                $(this).removeClass("is-valid");
+                $(this).addClass("is-invalid");
+                $(this).parent().append(`<div class="invalid-feedback">Mật khẩu quá ngắn</div>`);
+            }
+            else {
+                $(this).removeClass("is-invalid");
+                $(this).addClass("is-valid");
+                $(this).parent().append(`<div class="valid-feedback">OK</div>`);
+            }
+        });
+        $("#confirm_password").change(function () {
+            var password = $("#password").val();
+            var confirm_password = $(this).val();
+            if (password != confirm_password) {
+                $(this).removeClass("is-valid");
+                $(this).addClass("is-invalid");
+                $(this).parent().append(`<div class="invalid-feedback">Nhập lại mật khẩu không khớp</div>`);
+            }
+            else {
+                $(this).removeClass("is-invalid");
+                $(this).addClass("is-valid");
+                $(this).parent().append(`<div class="valid-feedback">OK</div>`);
+            }
+        });
+        function validatePasssword() {
+            var password = $("#password").val();
+            var confirm_password = $("#confirm_password").val();
+            if (password != confirm_password) {
+                alert("Nhập lại mật khẩu không đúng");
+                return false;
+            }
+        }
+    });
+</script> -->
+{% endblock content %}

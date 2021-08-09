@@ -1,0 +1,8 @@
+- Đưa 1 đường dẩn URL -> tìm template hiển thị.
+- Tham số bắt buộc phải có của 1 hàm views.py 
+- THay đổi port
+- Khi dùng ListView cho 1 model trong app tên a thì template nào đc hiển thị ?
+    - Cách thay đổi template đó
+
+- Cách Authentication của django là dùng  ? session? cookies? jwt ?
+- Các commands tương tác với models ?

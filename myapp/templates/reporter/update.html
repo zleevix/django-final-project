@@ -1,0 +1,25 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+    Update reporter
+{% endblock title %}
+
+{% block content %}
+<div class="col-md-4 offset-md-4">
+    <form method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                <label for="">{{ field.label }}</label>
+                {{ field }}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                <small style="color: red;" class="form-text text-muted"> {{ error }}</small>
+                {% endfor %}
+            {% endif %}
+            </div>    
+        {% endfor %}
+        <input type="submit" class="btn btn-success" value="Update reporter">
+    </form>
+</div>
+{% endblock content %}

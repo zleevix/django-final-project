@@ -1,0 +1,48 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+    Add Reporter
+{% endblock title %}
+
+{% block content %}
+    <div class="col-md-12">
+        <form method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="">{{ field.label }}</label>
+                    {{ field }}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                    <small style="color: red;" class="form-text text-muted"> {{ error }}</small>
+                    {% endfor %}
+                {% endif %}
+                </div>    
+            {% endfor %}
+            <input type="submit" class="btn btn-success" value="Add reporter">
+        </form>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $("#id_email").change(function(event) {
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'validate_email' %}",
+                    data: {
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        email: $(this).val()
+                    },
+                    success: function (data) {
+                        $(this).addClass("is-valid");
+                        $(this).parent().append(`<div>${data.message}</div>`);
+                    },
+                    error: function ($xhr, textStatus, erroThrown) {
+                        alert($xhr.responseJSON.message);
+                        $(this).css({"border": "1px solid red;"})
+                    }
+                })
+            });
+        });
+    </script>
+{% endblock content %}
+   

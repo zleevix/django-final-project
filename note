@@ -1,0 +1,28 @@
+# Note: tên biến khởi tạo thì tên class viết thường
+
+c = Python2104(ten="Alice", tuoi = 20, diachi="Việt Nam")
+c.save() # Khi khởi tạo 1 biến từ class Model thì phải gọi thêm <bien>.save()
+# Cách 1: Khởi tạo từ class Model
+
+
+Python2104.objects.create(ten="Ronaldo", tuoi = 36, diachi = "Juventus")
+# <Python2104: Python2104 object (4)>
+Không cần save()
+
+# Quan hệ 1-1: Thông qua field: OneToOneField
+# Truy cập vào cái đối tượng class liên kết thì truy cập qua thuộc tính <tên class viết thường>
+# Place 1-1 Restaurant
+# Biến đc khởi tạo từ Place tên place. Truy cập qua Restaurant thì gọi place.restaurant.
+# Và ngược lại    
+
+# Quan hệ 1-n: thông qua fields ForeignKey
+# 1 SoMot - n SoNhieu
+# 1 biến từ class SoMot tên là somot. Truy cập qua các data liên quan tới nó
+# thông qua somot.sonhieu_set.all() 
+#  1 biến từ class SoNhieu tên sonhieu. Truy cập qua data class kia
+# thông quan sonhieu.somot
+
+# Quan hệ nhiều-nhiều: ManyToManyField
+# Truy cập qua lại:
+# Class nào có chưa field ManyToManyField thì lấy field đó ra dùng hàm add thêm vào
+# Class kia thì <tên class kia>_set.add()

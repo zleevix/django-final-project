@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load myfilter %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        table, tr, td {
+            border: 1px solid black;
+        }
+        .chan {
+            background-color: lightblue;
+        }
+        .le {
+            background-color: lightgray;
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'index' %}">Back</a>
+    {{ a|pow:2 }} <!-- pow(a, 2)-->
+    {{ str_html|cut:" "}}
+    <table>
+        {% for item in data %}
+            <tr class="{% cycle 'le' 'chan' 'a' %}">
+                <td>{{ item.0 }}</td>
+                <td>{{ item.1 }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
